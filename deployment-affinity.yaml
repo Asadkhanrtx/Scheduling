@@ -1,3 +1,33 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: duniversity-new
+#   namespace: asad-ns
+# spec:
+#   replicas: 3
+#   selector:
+#     matchLabels:
+#       app: duniversity-new
+#   template:
+#     metadata:
+#       labels:
+#         app: duniversity-new
+#     spec:
+#       affinity:
+#         nodeAffinity:
+#           requiredDuringSchedulingIgnoredDuringExecution:
+#             nodeSelectorTerms:
+#             - matchExpressions:
+#               - key: training
+#                 operator: In
+#                 values:
+#                 - devops
+#       containers:
+#       - name: duniversity
+#         image: asadoblivion/duniversity-college-portal:v1.0
+#         ports:
+#         - containerPort: 3000
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,11 +47,35 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
+
+            # TERM 1 (AND logic inside)
             - matchExpressions:
               - key: training
                 operator: In
                 values:
                 - devops
+              - key: disktype
+                operator: In
+                values:
+                - ssd
+              - key: node-type
+                operator: NotIn
+                values:
+                - spot
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                - linux
+
+            # TERM 2 (OR logic – alternate allowed nodes)
+            - matchExpressions:
+              - key: environment
+                operator: In
+                values:
+                - staging
+              - key: gpu
+                operator: Exists
+
       containers:
       - name: duniversity
         image: asadoblivion/duniversity-college-portal:v1.0
