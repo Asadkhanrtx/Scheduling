@@ -18,6 +18,8 @@ spec:
       labels:
         app: duniversity
     spec:
+      nodeSelector:
+        training: devops
       containers:
         - name: duniversity
           image: asadoblivion/duniversity-college-portal:v1.0
