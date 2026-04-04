@@ -1,33 +1,3 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: duniversity-new
-#   namespace: asad-ns
-# spec:
-#   replicas: 3
-#   selector:
-#     matchLabels:
-#       app: duniversity-new
-#   template:
-#     metadata:
-#       labels:
-#         app: duniversity-new
-#     spec:
-#       affinity:
-#         nodeAffinity:
-#           requiredDuringSchedulingIgnoredDuringExecution:
-#             nodeSelectorTerms:
-#             - matchExpressions:
-#               - key: training
-#                 operator: In
-#                 values:
-#                 - devops
-#       containers:
-#       - name: duniversity
-#         image: asadoblivion/duniversity-college-portal:v1.0
-#         ports:
-#         - containerPort: 3000
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,10 +15,10 @@ spec:
     spec:
       affinity:
         nodeAffinity:
+
+          # 🔴 HARD RULE (UNCHANGED)
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-
-            # TERM 1 (AND logic inside)
             - matchExpressions:
               - key: training
                 operator: In
@@ -67,14 +37,15 @@ spec:
                 values:
                 - linux
 
-            # TERM 2 (OR logic – alternate allowed nodes)
-            - matchExpressions:
-              - key: environment
+          # 🟡 SOFT RULE (ADDED ONLY)
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: training
                 operator: In
                 values:
-                - staging
-              - key: gpu
-                operator: Exists
+                - devops
 
       containers:
       - name: duniversity
