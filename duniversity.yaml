@@ -4,7 +4,7 @@ metadata:
   name: duniversity-deployment
   namespace: asad-ns
 spec:
-  replicas: 1
+  replicas: 3
   strategy:
     type: RollingUpdate
     rollingUpdate:
