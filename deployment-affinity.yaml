@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: duniversity-deployment
+  namespace: asad-ns
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: duniversity-new
+  template:
+    metadata:
+      labels:
+        app: duniversity-new
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: training
+                operator: In
+                values:
+                - devops
+      containers:
+      - name: duniversity
+        image: asadoblivion/duniversity-college-portal:v1.0
+        ports:
+        - containerPort: 3000
