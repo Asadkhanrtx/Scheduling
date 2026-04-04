@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: duniversity-deployment
+  name: duniversity-new
   namespace: asad-ns
 spec:
   replicas: 3
