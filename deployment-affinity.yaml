@@ -50,6 +50,7 @@ spec:
         ports:
         - containerPort: 3000
       tolerations:
-      - training: "devops"
+      - key: "training"
         operator: "Equal"
+        value: "devops"
         effect: "NoSchedule"
