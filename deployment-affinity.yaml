@@ -13,39 +13,43 @@ spec:
       labels:
         app: duniversity-soft
     spec:
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
+      # affinity:
+      #   nodeAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
 
-          # ⭐ Highest priority to your label
-          - weight: 100
-            preference:
-              matchExpressions:
-              - key: training
-                operator: In
-                values:
-                - devops
+      #     # ⭐ Highest priority to your label
+      #     - weight: 100
+      #       preference:
+      #         matchExpressions:
+      #         - key: training
+      #           operator: In
+      #           values:
+      #           - devops
 
-          # ✅ Secondary preference (example label)
-          - weight: 60
-            preference:
-              matchExpressions:
-              - key: environment
-                operator: In
-                values:
-                - staging
+      #     # ✅ Secondary preference (example label)
+      #     - weight: 60
+      #       preference:
+      #         matchExpressions:
+      #         - key: environment
+      #           operator: In
+      #           values:
+      #           - staging
 
-          # ✅ Lowest preference (example label)
-          - weight: 30
-            preference:
-              matchExpressions:
-              - key: region
-                operator: In
-                values:
-                - india
+      #     # ✅ Lowest preference (example label)
+      #     - weight: 30
+      #       preference:
+      #         matchExpressions:
+      #         - key: region
+      #           operator: In
+      #           values:
+      #           - india
 
       containers:
       - name: duniversity
         image: asadoblivion/duniversity-college-portal:v1.0
         ports:
         - containerPort: 3000
+      tolerations:
+      - training: "devops"
+        operator: "Equal"
+        effect: "NoSchedule"
